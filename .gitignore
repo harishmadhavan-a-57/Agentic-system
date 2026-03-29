@@ -1,0 +1,83 @@
+# ──────────────────────────────────────────
+# Python Agentic System — .gitignore
+# ──────────────────────────────────────────
+
+# ── Environment & Secrets ─────────────────
+.env
+.env.*
+!.env.example
+*.secret
+secrets.json
+
+# ── Python Virtual Environment ────────────
+venv/
+env/
+.venv/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# ── Python Cache & Compiled Files ─────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# ── Distribution / Build ──────────────────
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+MANIFEST
+
+# ── pytest & Testing ──────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+
+# ── Jupyter Notebooks ─────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── ML Model Cache ────────────────────────
+# HuggingFace / Transformers downloaded model weights
+# These are large (100MB–1GB+), never commit them
+models/
+*.bin
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+.cache/
+~/.cache/huggingface/
+
+# Sentence-Transformers cache
+sentence_transformers/
+
+# FAISS index files (regenerated on startup)
+*.index
+*.faiss
+faiss_index/
+
+# ── Logs ──────────────────────────────────
+logs/
+*.log
+log/
+
+# ── IDE & Editor ──────────────────────────
+.vscode/
+
+# ── Temporary files ───────────────────────
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
