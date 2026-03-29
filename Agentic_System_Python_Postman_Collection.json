@@ -1,0 +1,815 @@
+{
+  "info": {
+    "_postman_id": "agentic-system-python-v1",
+    "name": "Agentic System - Python (Scalable 100+ Tools)",
+    "description": "Complete test suite for the Python Agentic System.\n\nHow to use:\n1. Start the server: python main.py\n2. Set environment variable base_url = http://127.0.0.1:8000\n3. For multi-step flows (e.g. create invoice → send invoice), use the SAME session_id across requests\n4. Run requests in folder order for best demo flow\n\nDomains covered:\n- E-commerce (FakeStore API)\n- PayPal (Sandbox)\n- RAG / Knowledge Base\n- System Tools",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "session_id",
+      "value": "demo-session-1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Health & System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Verify server is running"
+          },
+          "response": []
+        },
+        {
+          "name": "Get New Session ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/session",
+              "host": ["{{base_url}}"],
+              "path": ["session"]
+            },
+            "description": "Generate a new session ID. Copy the returned session_id and use it in related requests."
+          },
+          "response": []
+        },
+        {
+          "name": "View All Registered Tools",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tools",
+              "host": ["{{base_url}}"],
+              "path": ["tools"]
+            },
+            "description": "See all tools registered in the system grouped by domain. Demonstrates the tool registry."
+          },
+          "response": []
+        },
+        {
+          "name": "System - What tools do you have?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What tools are available for managing invoices?\",\n  \"session_id\": \"{{session_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers system.list_tools — demonstrates the System Search Tool requirement from the problem statement."
+          },
+          "response": []
+        },
+        {
+          "name": "System - What can you do?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What are your capabilities?\",\n  \"session_id\": \"{{session_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Another system query variant."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "01 - E-commerce Tools",
+      "item": [
+        {
+          "name": "Show all products",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show products\",\n  \"session_id\": \"ecom-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers ecommerce domain → get_products tool"
+          },
+          "response": []
+        },
+        {
+          "name": "Show electronics products",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show electronics products\",\n  \"session_id\": \"ecom-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers get_products_by_category with category=electronics"
+          },
+          "response": []
+        },
+        {
+          "name": "Show clothing products",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show men's clothing\",\n  \"session_id\": \"ecom-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Category routing test — men's clothing"
+          },
+          "response": []
+        },
+        {
+          "name": "Get product details",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Get product details\",\n  \"session_id\": \"ecom-4\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers get_product tool"
+          },
+          "response": []
+        },
+        {
+          "name": "List all categories",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What categories are available in the store?\",\n  \"session_id\": \"ecom-5\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers get_categories tool"
+          },
+          "response": []
+        },
+        {
+          "name": "Show carts",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show shopping carts\",\n  \"session_id\": \"ecom-6\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers get_carts tool"
+          },
+          "response": []
+        },
+        {
+          "name": "Multi-step: Show electronics AND create invoice $40",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show electronics and create invoice for $40\",\n  \"session_id\": \"multi-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "MULTI-STEP: Demonstrates the planner creating 2 steps — get_products_by_category + create_invoice. Core feature of the agentic system."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - PayPal Tools",
+      "item": [
+        {
+          "name": "Get PayPal balance",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Get my PayPal balance\",\n  \"session_id\": \"paypal-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers paypal domain → get_balance tool"
+          },
+          "response": []
+        },
+        {
+          "name": "List invoices",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"List my invoices\",\n  \"session_id\": \"paypal-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers list_invoices tool"
+          },
+          "response": []
+        },
+        {
+          "name": "Show transactions",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show my transactions\",\n  \"session_id\": \"paypal-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers list_transactions tool"
+          },
+          "response": []
+        },
+        {
+          "name": "Create invoice $50",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Create an invoice for $50\",\n  \"session_id\": \"invoice-flow-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Step 1 of invoice flow. The invoiceId is saved in session 'invoice-flow-1'. Run this BEFORE 'Send invoice'."
+          },
+          "response": []
+        },
+        {
+          "name": "Send invoice (uses session context)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Send the invoice\",\n  \"session_id\": \"invoice-flow-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Step 2 of invoice flow. Uses the SAME session_id 'invoice-flow-1' so it picks up the invoiceId from Step 1 automatically. This demonstrates STATE MANAGEMENT."
+          },
+          "response": []
+        },
+        {
+          "name": "Create invoice $80 AND send (single request)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Create invoice for $80 and send it\",\n  \"session_id\": \"invoice-flow-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "MULTI-STEP in ONE request: Planner creates [create_invoice, send_invoice]. The invoiceId from step 1 is passed to step 2 via context. Core agentic behaviour."
+          },
+          "response": []
+        },
+        {
+          "name": "Create invoice $100 AND send (single request)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Create invoice for $100 and send it\",\n  \"session_id\": \"invoice-flow-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Another multi-step invoice test with different amount."
+          },
+          "response": []
+        },
+        {
+          "name": "Send invoice without prior context (error case)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Send the invoice\",\n  \"session_id\": \"brand-new-session-xyz\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "ERROR HANDLING TEST: Session has no invoiceId saved. Should return graceful error: 'No invoice found. Please create an invoice first.'"
+          },
+          "response": []
+        },
+        {
+          "name": "List invoices after creation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"List invoices\",\n  \"session_id\": \"paypal-check\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Run this after creating invoices to verify they appear."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - RAG / Knowledge Base",
+      "item": [
+        {
+          "name": "What is an invoice?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is an invoice?\",\n  \"session_id\": \"rag-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Triggers RAG pipeline — searches FAISS vector index for relevant knowledge chunks."
+          },
+          "response": []
+        },
+        {
+          "name": "What is PayPal?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is PayPal?\",\n  \"session_id\": \"rag-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "RAG knowledge retrieval for PayPal explanation."
+          },
+          "response": []
+        },
+        {
+          "name": "What is a transaction?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is a transaction?\",\n  \"session_id\": \"rag-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "RAG test — financial terminology."
+          },
+          "response": []
+        },
+        {
+          "name": "What is sandbox mode?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is sandbox mode in PayPal?\",\n  \"session_id\": \"rag-4\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "RAG test — sandbox explanation."
+          },
+          "response": []
+        },
+        {
+          "name": "What are you? (identity)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What are you?\",\n  \"session_id\": \"rag-5\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Identity question — handled by RAG knowledge base."
+          },
+          "response": []
+        },
+        {
+          "name": "RAG Guardrail - Out of scope (blockchain)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Explain blockchain technology\",\n  \"session_id\": \"rag-guard-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "GUARDRAIL TEST: Out-of-scope query. Low FAISS similarity score → returns 'I cannot answer this query' message. Demonstrates RAG guardrails."
+          },
+          "response": []
+        },
+        {
+          "name": "RAG Guardrail - Out of scope (president)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Who is the president of USA?\",\n  \"session_id\": \"rag-guard-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "GUARDRAIL TEST: Completely unrelated query. Should be rejected by RAG confidence threshold."
+          },
+          "response": []
+        },
+        {
+          "name": "RAG Guardrail - Out of scope (weather)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is the weather today?\",\n  \"session_id\": \"rag-guard-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "GUARDRAIL TEST: Off-domain query."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Multi-Step Agentic Flows",
+      "item": [
+        {
+          "name": "Show products + create invoice $30",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show products and create invoice for $30\",\n  \"session_id\": \"multi-flow-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "CROSS-DOMAIN MULTI-STEP: ecommerce + paypal in one request. Demonstrates the planner handling mixed domains."
+          },
+          "response": []
+        },
+        {
+          "name": "Get product details + create invoice $25",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Get product details and create invoice for $25\",\n  \"session_id\": \"multi-flow-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Multi-step: get_product + create_invoice"
+          },
+          "response": []
+        },
+        {
+          "name": "Full invoice lifecycle (create + send in one)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Create an invoice for $60 and send it to the client\",\n  \"session_id\": \"full-lifecycle-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "FULL LIFECYCLE: create_invoice → send_invoice in one natural language request. invoiceId flows from step 1 to step 2 via context."
+          },
+          "response": []
+        },
+        {
+          "name": "3-step: Show electronics + create + send invoice",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show electronics products, create invoice for $75 and send it\",\n  \"session_id\": \"three-step-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "3-STEP PLAN: get_products_by_category → create_invoice → send_invoice. Maximum complexity test."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - Edge Cases & Error Handling",
+      "item": [
+        {
+          "name": "Invalid / unknown query",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"get_users\",\n  \"session_id\": \"edge-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Raw tool name sent as query — should gracefully handle with RAG fallback."
+          },
+          "response": []
+        },
+        {
+          "name": "Missing amount in invoice",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Create an invoice\",\n  \"session_id\": \"edge-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "No amount specified — executor should use default value of $10.00."
+          },
+          "response": []
+        },
+        {
+          "name": "Ambiguous query - payment or product?",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"I want to buy something and pay for it\",\n  \"session_id\": \"edge-3\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Ambiguous query — tests how the LLM router handles mixed signals."
+          },
+          "response": []
+        },
+        {
+          "name": "Empty query",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"\",\n  \"session_id\": \"edge-4\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Empty string query — tests error handling."
+          },
+          "response": []
+        },
+        {
+          "name": "No session_id (auto-generated)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show products\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "No session_id in request — server auto-generates one and returns it in response."
+          },
+          "response": []
+        },
+        {
+          "name": "Semantic tool match test",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Generate a bill for fifty dollars\",\n  \"session_id\": \"semantic-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "SEMANTIC ROUTING TEST: Says 'bill' not 'invoice', 'fifty dollars' not '$50'. Tests if sentence-transformers correctly maps this to create_invoice. This would FAIL in the Node.js keyword-matching version."
+          },
+          "response": []
+        },
+        {
+          "name": "Semantic tool match test 2",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"What is my account balance?\",\n  \"session_id\": \"semantic-2\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Says 'account balance' not just 'balance' — semantic match to get_balance."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 - Scalability Demo",
+      "item": [
+        {
+          "name": "Tool count verification",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/tools",
+              "host": ["{{base_url}}"],
+              "path": ["tools"]
+            },
+            "description": "Verify total tool count. Shows how many tools are registered across all domains."
+          },
+          "response": []
+        },
+        {
+          "name": "Rapid fire - 5 different domains",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show electronics\",\n  \"session_id\": \"rapid-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "Run this and the next 4 requests quickly to show the system handles concurrent different domain queries correctly."
+          },
+          "response": []
+        },
+        {
+          "name": "Domain isolation test - ecommerce query routes only to ecommerce tools",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"Show me all available products in the store\",\n  \"session_id\": \"isolation-1\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/chat",
+              "host": ["{{base_url}}"],
+              "path": ["chat"]
+            },
+            "description": "ISOLATION TEST: Even though we have PayPal tools registered, this query should ONLY route to ecommerce domain. Demonstrates domain isolation."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
